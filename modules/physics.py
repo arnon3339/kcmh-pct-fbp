@@ -4,7 +4,7 @@ import uproot
 import pandas as pd
 import numpy as np
 import modules.plots as plot
-from modules import utils, analyse
+from modules import utils
 import warnings
 
 OUTDIR = "/data/pct/sim/cal/output"
