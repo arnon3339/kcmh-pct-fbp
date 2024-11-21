@@ -7,5 +7,6 @@ from modules.analyse import *
 from modules.utils import *
 import pandas as pd
 
+
 if __name__ == '__main__':
-    gen_pct_data(200)
+    print(get_1_stp_power_integral(2, 9, mat='dummy'))
