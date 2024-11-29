@@ -36,24 +36,29 @@ def get_pct_data(data: pd.DataFrame, en, experiment=False):
     rec_data = rec_data[
         rec_data.trackID.isin(allow_track_ids_0.intersection(allow_track_ids_1))
         ]
+
     data_ren: pd.DataFrame = rec_data.groupby(['trackID'], as_index=False)\
         ['thickness'].sum()
+
     data_ren['trackX0'] = data_ren.apply(
-        lambda row: rec_data[(rec_data.trackID == row['trackID']) &\
-            (rec_data.layerID == 0)]['pixelX'].values[0],
-        axis=1)
+            lambda row: rec_data[(rec_data.trackID == row['trackID']) &\
+                (rec_data.layerID == 0)]['pixelX'].values[0], axis=1
+        )
+
     data_ren['trackY0'] = data_ren.apply(
-        lambda row: rec_data[(rec_data.trackID == row['trackID']) &\
-            (rec_data.layerID == 0)]['pixelY'].values[0],
-        axis=1)
+            lambda row: rec_data[(rec_data.trackID == row['trackID']) &\
+                (rec_data.layerID == 0)]['pixelY'].values[0], axis=1
+        )
+
     data_ren['trackX1'] = data_ren.apply(
-        lambda row: rec_data[(rec_data.trackID == row['trackID']) &\
-            (rec_data.layerID == 1)]['pixelX'].values[0],
-        axis=1)
+            lambda row: rec_data[(rec_data.trackID == row['trackID']) &\
+                (rec_data.layerID == 1)]['pixelX'].values[0], axis=1
+        )
+
     data_ren['trackY1'] = data_ren.apply(
-        lambda row: rec_data[(rec_data.trackID == row['trackID']) &\
-            (rec_data.layerID == 1)]['pixelY'].values[0],
-        axis=1)
+            lambda row: rec_data[(rec_data.trackID == row['trackID']) &\
+                (rec_data.layerID == 1)]['pixelY'].values[0], axis=1
+        )
     
     data_ren['ren'] = data_ren['thickness'].\
         apply(lambda x: physics.get_ren_from_dtc(en, x))

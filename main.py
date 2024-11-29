@@ -9,4 +9,4 @@ import pandas as pd
 
 
 if __name__ == '__main__':
-    print(get_1_stp_power_integral(2, 9, mat='dummy'))
+    gen_pct_data(200, original=True)

@@ -62,7 +62,7 @@ def get_1_stp_power_integral(en_in, en_out, mat='water'):
 
 
 def add_angle_data(data: pd.DataFrame, angle):
-    return data.insert(0, 'angle', angle)
+    return data.insert(len(data.columns), 'angle', angle)
 
 def gen_pct_data(en, original=False, format='csv'):
     data_path = f"/data/pct/sim/cpt404/eMeV_{en}"
@@ -77,14 +77,22 @@ def gen_pct_data(en, original=False, format='csv'):
         if i > 0:
             break
         print(f"Starting {k}, file: {i}.")
+        angle = int(k.split('_')[-1])
         if not original:
             with uproot.open(path.join(data_path, k, v[0])) as f:
                 tree = f['pCT;1']
                 df = tree.arrays(library='pd')
-                utils.add_angle_data(df, int(k.split('_')[-1]))
-                data_list.append(analyse.get_pct_data(df, en))
+                pct_data = analyse.get_pct_data(df, en)
+                utils.add_angle_data(df, angle)
+                data_list.append(pct_data)
         else:
-            pass
+            for vv in v:
+                with uproot.open(path.join(data_path, k, vv)) as f:
+                    tree = f['pCT;1']
+                    df = tree.arrays(library='pd')
+                    pct_data = analyse.get_pct_data(df, en)
+                    utils.add_angle_data(df, angle)
+                    data_list.append(pct_data)
         print(f"Finished {k}, file: {i}.")
 
     df = pd.concat(data_list, ignore_index=True)
